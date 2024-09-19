@@ -61,7 +61,7 @@ const epsilondigital = new EpsilondigitalRestApi({
 
 ### LOGIN
 
-- `.login(  params )`
+- `.login( params )`
 
 | Params   | Type     | Description          |
 | -------- | -------- | -------------------- |
@@ -69,7 +69,7 @@ const epsilondigital = new EpsilondigitalRestApi({
 
 ### REFRESH
 
-- `.refresh(  params )`
+- `.refresh( params )`
 
 | Params   | Type     | Description          |
 | -------- | -------- | -------------------- |
