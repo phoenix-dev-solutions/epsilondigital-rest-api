@@ -43,7 +43,7 @@ const epsilondigital = new EpsilondigitalRestApi({
 | `sandbox`         | `Boolean` | no       | Define if is sandox or not.Default is `false`                                                                       |
 | `autoLogin`       | `Boolean` | no       | Auto login to Epsilondigital and store jwt for next requests                                                        |
 | `encoding`        | `String`  | no       | Encoding, default is `utf-8`                                                                                        |
-| `timeout`         | `Integer` | no       | Define the request timeout                                                                                          |
+| `timeout`         | `Integer` | no       | Define the request timeout, default is `30 sec`                                                                     |
 | `axiosConfig`     | `Object`  | no       | Define the custom [Axios config](https://github.com/axios/axios#request-config), also override this library options |
 
 ## Methods
@@ -98,3 +98,5 @@ npm test
 ## Release History
 
 - 2024-09-19 - v1.0.0 - Initial release.
+- 2024-09-19 - v1.0.1 - Readme update.
+- 2024-10-04 - v1.0.2 - Fix refresh token.

@@ -64,7 +64,7 @@ class EpsilondigitalRestApi {
     this.sandbox = opt.sandbox || false;
     this.autoLogin = opt.autoLogin || false;
     this.encoding = opt.encoding || 'utf8';
-    this.timeout = opt.timeout;
+    this.timeout = opt.timeout || 30000;
     this.axiosConfig = opt.axiosConfig || {};
 
     // Epsilondigital
@@ -110,9 +110,11 @@ class EpsilondigitalRestApi {
       responseType: 'application/json',
       headers: {
         Accept: 'application/json',
-        ...(this?.token?.jwt && {
-          Authorization: `Bearer ${this?.token?.jwt}`,
-        }),
+        ...(this?.token?.jwt &&
+          endpoint != '/api/token/refresh' &&
+          endpoint != '/api/Account/LoginToSubscription' && {
+            Authorization: `Bearer ${this?.token?.jwt}`,
+          }),
         'Content-Type': 'application/json; charset=utf-8',
         'User-Agent':
           'Epsilondigital REST API - JS Client/' + this.classVersion,
@@ -201,16 +203,9 @@ class EpsilondigitalRestApi {
       refreshToken: this?.token?.jwtRefreshToken,
     };
 
-    await this.post(data, '/api/token/refresh', params)
+    const refreshTokenData = await this.post(data, '/api/token/refresh', params)
       .then(function (response) {
-        this.baseUrl = response.data.url1;
-        this.token = {
-          jwt: response.data.jwt,
-          jwtExpiration: response.data.jwtExpiration,
-          jwtRefreshToken: response.data.jwtRefreshToken,
-          jwtRefreshTokenExpiration: response.data.jwtRefreshTokenExpiration,
-        };
-        return response.data;
+        return JSON.parse(response.data);
       })
       .catch(function (error) {
         const errorData = JSON.parse(error?.response?.data ?? '{}');
@@ -228,6 +223,13 @@ class EpsilondigitalRestApi {
             error?.error
         );
       });
+
+    this.token = {
+      jwt: refreshTokenData?.jwt,
+      jwtExpiration: refreshTokenData?.jwtExpiration,
+      jwtRefreshToken: refreshTokenData?.jwtRefreshToken,
+      jwtRefreshTokenExpiration: refreshTokenData?.jwtRefreshTokenExpiration,
+    };
   }
 
   /**
